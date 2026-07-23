@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniMart Inventory</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>🛒 MiniMart Inventory</h1>
+        <p>Node.js + Express + SQLite Practice Project</p>
+    </header>
+
+    <div class="container">
+
+        <!-- Search -->
+
+        <div class="card">
+            <h2>Search Product</h2>
+
+            <div class="row">
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search product..."
+                >
+
+                <button id="searchBtn">
+                    Search
+                </button>
+            </div>
+        </div>
+
+        <!-- Add Product -->
+
+        <div class="card">
+            <h2>Add Product</h2>
+
+            <input
+                type="text"
+                id="name"
+                placeholder="Product Name"
+            >
+
+            <input
+                type="number"
+                id="price"
+                placeholder="Price"
+            >
+
+            <input
+                type="number"
+                id="stock"
+                placeholder="Stock"
+            >
+
+            <button id="addBtn">
+                Add Product
+            </button>
+        </div>
+
+        <!-- Product List -->
+
+        <div class="card">
+
+            <div class="products-header">
+
+                <h2>Products</h2>
+
+                <button id="loadBtn">
+                    Refresh
+                </button>
+
+            </div>
+
+            <div id="products" class="products-grid">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        const loadBtn = document.getElementById("loadBtn");
+const searchBtn = document.getElementById("searchBtn");
+const addBtn = document.getElementById("addBtn");
+
+const productsDiv = document.getElementById("products");
+
+async function loadProducts(){
+
+    const response = await fetch("/products");
+
+    const products = await response.json();
+
+    renderProducts(products);
+}
+
+function renderProducts(products){
+
+    productsDiv.innerHTML = "";
+
+    products.forEach(product => {
+
+        productsDiv.innerHTML += `
+            <div class="product-card">
+
+                <div class="product-name">
+                    ${product.name}
+                </div>
+
+                <div class="price">
+                    ₹${product.price}
+                </div>
+
+                <div class="stock">
+                    Stock: ${product.stock}
+                </div>
+
+                <div class="id">
+                    Product ID: ${product.id}
+                </div>
+
+            </div>
+        `;
+
+    });
+
+}
+
+loadBtn.addEventListener("click", loadProducts);
+
+searchBtn.addEventListener("click", async ()=>{
+
+    const name =
+    document.getElementById("searchInput").value;
+
+    const response =
+    await fetch(`/products/search?name=${name}`);
+
+    const products =
+    await response.json();
+
+    renderProducts(products);
+
+});
+
+addBtn.addEventListener("click", async ()=>{
+
+    const name =
+    document.getElementById("name").value;
+
+    const price =
+    document.getElementById("price").value;
+
+    const stock =
+    document.getElementById("stock").value;
+
+    await fetch("/products",{
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+            name,
+            price,
+            stock
+        })
+    });
+
+    loadProducts();
+
+});
+
+loadProducts();
+
+
+
+    </script>
+
+</body>
+</html>
