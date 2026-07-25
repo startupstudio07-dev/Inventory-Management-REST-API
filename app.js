@@ -7,11 +7,10 @@ const productroutes = require("D:\\Users\\Lhohith\\Desktop\\project1\\routes\\pr
 const error  = require("../project1/middlewares/errorhandling");
 
 app.use("/products",productroutes)
-
+console.log("hi i am lohith");
 app.use(error)
 console.log("hello world");
 console.log("hello worlds");
-console.log("hi i am lohith");
 
 
 app.listen(3000,()=>{
