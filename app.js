@@ -10,6 +10,7 @@ app.use("/products",productroutes)
 
 app.use(error)
 console.log("hello world");
+console.log("hello worlds");
 
 
 app.listen(3000,()=>{
