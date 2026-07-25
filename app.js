@@ -9,6 +9,7 @@ const error  = require("../project1/middlewares/errorhandling");
 app.use("/products",productroutes)
 
 app.use(error)
+console.log("hello world");
 
 
 app.listen(3000,()=>{
